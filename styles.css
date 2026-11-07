@@ -1,0 +1,952 @@
+/* ============================================================
+   Dr. Cornelia Scheitz — personal site
+   Rebuilt to match the source Wix design
+   ============================================================ */
+:root {
+  --ink: #141414;          /* nav, footer, odd cards */
+  --ink-soft: #4a4a4a;     /* secondary text on white */
+  --paper: #ffffff;        /* main content surface */
+  --lavender: #c6c4f5;     /* even cards / accent */
+  --lavender-text: #b6b3f2; /* accent text on dark */
+  --lavender-deep: #6f6bd6; /* accent on light bg (links/hover) */
+  --line: rgba(20, 20, 20, 0.12);
+  --line-on-ink: rgba(255, 255, 255, 0.14);
+  --max-w: 1400px;
+  --gutter: clamp(20px, 5vw, 88px);
+  --font: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+:focus-visible {
+  outline: 2px solid var(--lavender-deep);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  background: var(--lavender);
+  color: var(--ink);
+  padding: 12px 18px;
+  z-index: 1000;
+  font-weight: 600;
+  border-radius: 6px;
+}
+.skip-link:focus { left: var(--gutter); top: 12px; }
+
+/* ============================================================
+   Header / nav
+   ============================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(12, 12, 12, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(18px, 3vw, 44px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 0.98rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible { color: var(--lavender-text); }
+
+.nav-links a[aria-current="page"] { color: var(--lavender-text); }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px;
+}
+.nav-toggle svg { width: 26px; height: 26px; }
+
+@media (max-width: 760px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    top: 66px;
+    background: var(--ink);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 12px var(--gutter) 40px;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .nav-links.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-on-ink);
+    font-size: 1.25rem;
+  }
+}
+
+/* ============================================================
+   Hero — full-bleed photo, name + tags bottom-left
+   ============================================================ */
+.hero {
+  position: relative;
+  margin-top: -76px; /* pull up under sticky nav */
+  min-height: 92vh;
+  display: flex;
+  align-items: flex-end;
+  background: #0b0f16 url("images/hero.jpg") 50% 14% / cover no-repeat;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 42%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  padding-top: 140px;
+  padding-bottom: clamp(48px, 7vw, 96px);
+  color: #fff;
+  text-align: center;
+}
+
+.hero-copy h1 {
+  font-weight: 800;
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  line-height: 1.02;
+  margin: 0 0 28px;
+  letter-spacing: -0.01em;
+}
+
+.tags {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ============================================================
+   Essay / intro section
+   ============================================================ */
+.essay {
+  position: relative;
+  background: var(--paper);
+  padding: clamp(56px, 9vw, 108px) 0 clamp(40px, 6vw, 72px);
+}
+
+.essay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(64px, 10vw, 120px);
+  height: clamp(64px, 10vw, 120px);
+  background: var(--ink);
+  border-bottom-right-radius: 100%;
+}
+
+.essay .wrap { max-width: 880px; }
+
+.essay h2 {
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+  line-height: 1.18;
+  max-width: 17ch;
+  margin: 0 0 40px;
+}
+
+.essay p {
+  font-size: clamp(1.02rem, 1.5vw, 1.15rem);
+  color: var(--ink-soft);
+  max-width: 62ch;
+  margin: 0 0 1.5em;
+}
+
+.essay p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   Working-on: sticky stacked cards
+   ============================================================ */
+.focus {
+  padding: clamp(56px, 8vw, 96px) 0 clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--line);
+}
+
+.focus .wrap {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+.focus h2 {
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+  margin: 0;
+  max-width: 14ch;
+}
+
+.focus-track { display: flex; flex-direction: column; gap: 28px; }
+
+.focus-card {
+  position: sticky;
+  min-height: 420px;
+  border-radius: 28px;
+  padding: clamp(32px, 4vw, 52px) clamp(28px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+.focus-card:hover,
+.focus-card:focus-within {
+  transform: translateY(-8px);
+}
+
+.focus-card:nth-child(1) { top: 96px; background: var(--ink); color: #fff; z-index: 1; }
+.focus-card:nth-child(2) { top: 128px; background: var(--lavender); color: var(--ink); z-index: 2; }
+.focus-card:nth-child(3) { top: 160px; background: var(--ink); color: #fff; z-index: 3; }
+.focus-card:nth-child(4) { top: 192px; background: var(--lavender); color: var(--ink); z-index: 4; }
+
+.focus-card .num {
+  font-weight: 500;
+  font-size: 1.8rem;
+  margin: 0 0 auto;
+  opacity: 0.9;
+}
+
+.focus-card h3 {
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  margin: 48px 0 16px;
+}
+
+.focus-card p {
+  font-size: 1.02rem;
+  margin: 0;
+  max-width: 46ch;
+  opacity: 0.85;
+}
+
+@media (max-width: 860px) {
+  .focus .wrap { grid-template-columns: 1fr; }
+  .focus h2 { margin-bottom: 8px; max-width: none; }
+  .focus-card { position: relative; top: auto !important; min-height: 0; }
+}
+
+/* ============================================================
+   Banner photo
+   ============================================================ */
+.banner img {
+  width: 100%;
+  height: clamp(280px, 48vw, 620px);
+  object-fit: cover;
+  object-position: 50% 25%;
+}
+
+/* ============================================================
+   Page header (interior pages)
+   ============================================================ */
+.page-hero {
+  padding: clamp(56px, 9vw, 100px) 0 clamp(36px, 5vw, 56px);
+  border-bottom: 1px solid var(--line);
+}
+
+.page-hero .kicker {
+  color: var(--lavender-deep);
+  font-weight: 600;
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
+.page-hero h1 {
+  font-weight: 700;
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  margin: 0 0 18px;
+  max-width: 18ch;
+}
+
+.page-hero p {
+  color: var(--ink-soft);
+  max-width: 60ch;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.placeholder-panel {
+  margin: clamp(40px, 6vw, 72px) 0 clamp(56px, 8vw, 96px);
+  padding: clamp(28px, 4vw, 44px);
+  background: var(--lavender);
+  border-radius: 24px;
+  max-width: 640px;
+}
+
+.placeholder-panel h2 {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 0 0 10px;
+}
+
+.placeholder-panel p {
+  margin: 0 0 0.9em;
+  color: var(--ink);
+  opacity: 0.85;
+}
+.placeholder-panel p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   About page — split hero (copy left, portrait bleeding right)
+   ============================================================ */
+.about-hero {
+  padding: clamp(56px, 10vw, 150px) 0 clamp(56px, 8vw, 110px);
+}
+
+.about-hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 34%);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+
+.about-hero-copy p {
+  font-size: clamp(1.02rem, 1.4vw, 1.17rem);
+  line-height: 1.62;
+  color: var(--ink);
+  max-width: 60ch;
+  margin: 0 0 1.5em;
+}
+.about-hero-copy p:last-child { margin-bottom: 0; }
+
+.about-hero-photo img {
+  width: 100%;
+  height: clamp(360px, 42vw, 600px);
+  object-fit: cover;
+  object-position: 50% 28%;
+  border-radius: 22px;
+}
+
+/* Page title — bold, uppercase, restrained but confident */
+.display-title {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 clamp(20px, 2.6vw, 30px);
+}
+
+@media (max-width: 900px) {
+  .about-hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .about-hero-photo { order: -1; }
+  .about-hero-photo img { height: clamp(320px, 62vw, 520px); }
+}
+
+/* ============================================================
+   Section heads — small bold eyebrow + large light headline
+   ============================================================ */
+.display-head { margin: 0 0 clamp(30px, 4.5vw, 50px); }
+
+.eyebrow-lg {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  letter-spacing: 0.02em;
+  margin: 0 0 clamp(6px, 1vw, 12px);
+  color: var(--ink);
+}
+
+.display-sub {
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* ============================================================
+   Photo cards (What Drives Me)
+   ============================================================ */
+.philosophy { padding: clamp(48px, 7vw, 96px) 0 clamp(56px, 8vw, 110px); }
+
+.photo-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 3.4vw, 52px);
+  align-items: stretch;
+}
+
+.photo-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 26px;
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+
+.photo-card:hover,
+.photo-card:focus-within {
+  transform: translateY(-8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-card, .mini-card, .contrib-list li, .mic-card, .focus-card { transition: none; }
+  .photo-card:hover, .photo-card:focus-within,
+  .mini-card:hover, .mini-card:focus-within,
+  .contrib-list li:hover, .contrib-list li:focus-within,
+  .mic-card:hover, .mic-card:focus-visible,
+  .focus-card:hover, .focus-card:focus-within { transform: none; }
+}
+
+.photo-card img {
+  width: 100%;
+  height: clamp(220px, 26vw, 400px);
+  object-fit: cover;
+}
+
+.photo-card-body {
+  padding: clamp(22px, 2.6vw, 38px) clamp(20px, 2.4vw, 38px) clamp(26px, 3vw, 44px);
+}
+
+.photo-card-body h3 {
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+  line-height: 1.25;
+  margin: 0 0 12px;
+}
+
+.photo-card-body p {
+  font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+  line-height: 1.55;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 900px) {
+  .photo-cards { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 620px) {
+  .photo-cards { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-footer {
+  position: relative;
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.85);
+  padding: clamp(48px, 7vw, 80px) 0 32px;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(48px, 8vw, 96px);
+  height: clamp(48px, 8vw, 96px);
+  background: var(--lavender);
+  border-bottom-right-radius: 100%;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 40px;
+}
+
+.footer-brand {
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.footer-col h4 {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 16px;
+  font-weight: 600;
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-col a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.98rem;
+}
+.footer-col a:hover, .footer-col a:focus-visible { color: var(--lavender-text); }
+
+.footer-bottom {
+  padding-top: 24px;
+  border-top: 1px solid var(--line-on-ink);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 700px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: 1 / -1; }
+}
+
+/* ============================================================
+   Shared interior-page components
+   ============================================================ */
+.section {
+  padding: clamp(40px, 6vw, 72px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-head {
+  max-width: 62ch;
+  margin: 0 0 clamp(28px, 4vw, 44px);
+}
+
+.section-head h2 {
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 0 0 14px;
+}
+
+.section-head p {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.lede {
+  max-width: 68ch;
+}
+
+.lede p {
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: var(--ink-soft);
+  margin: 0 0 1.3em;
+}
+.lede p:last-child { margin-bottom: 0; }
+
+/* Tighter spacing between a page headline and the section below it */
+.page-hero--tight { padding-bottom: clamp(18px, 2.5vw, 28px); }
+.page-hero--tight h1 { margin-bottom: 9px; }
+.section--tight { padding-top: clamp(20px, 3vw, 36px); }
+
+/* Wide, two-line page headline (Talks & Events) */
+.page-hero h1.h1-wide { max-width: none; font-size: clamp(1.7rem, 3.7vw, 2.9rem); }
+@media (max-width: 700px) { .br-lg { display: none; } }
+
+/* Intro text beside a photo (PassTheMic) */
+.lede-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+.lede-split-text { max-width: none; }
+.lede-split-photo { order: -1; }
+.lede-split-photo img {
+  display: block;
+  width: 100%;
+  height: clamp(320px, 38vw, 520px);
+  object-fit: cover;
+  object-position: 55% 45%;
+  border-radius: 22px;
+}
+/* Variant: photo on the right, tall portrait */
+.lede-split--photo-right { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); align-items: start; }
+.lede-split--photo-right .lede-split-photo { order: 0; }
+.lede-split--photo-right .lede-split-photo img {
+  height: auto;
+  aspect-ratio: 2 / 3;
+  max-width: 420px;
+  margin-left: auto;
+  object-position: 50% 12%;
+}
+@media (max-width: 860px) {
+  .lede-split--photo-right .lede-split-photo img { max-width: 340px; margin: 0 auto; }
+}
+@media (max-width: 860px) {
+  .lede-split { grid-template-columns: 1fr; }
+  .lede-split-photo { order: 0; }
+  .lede-split-photo img { height: clamp(240px, 62vw, 380px); }
+}
+
+.pull-quote {
+  border-left: 3px solid var(--lavender-deep);
+  padding: 4px 0 4px 24px;
+  margin: clamp(28px, 4vw, 40px) 0;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 46ch;
+}
+
+/* --- small card grid (What Drives Me / Themes) --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.mini-card {
+  border-radius: 22px;
+  padding: clamp(24px, 3vw, 32px);
+  transition: transform 0.25s ease;
+}
+
+.mini-card:hover,
+.mini-card:focus-within {
+  transform: translateY(-8px);
+}
+
+.mini-card:nth-child(odd) { background: var(--ink); color: #fff; }
+.mini-card:nth-child(even) { background: var(--lavender); color: var(--ink); }
+
+.mini-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.mini-card p {
+  font-size: 0.98rem;
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* --- timeline (Journey) --- */
+.timeline {
+  position: relative;
+  max-width: 720px;
+  padding-left: 28px;
+  border-left: 2px solid var(--line);
+}
+
+.timeline-item { position: relative; padding-bottom: 36px; }
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -33px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--lavender-deep);
+}
+
+.timeline-item h3 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.timeline-item p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+}
+
+/* --- contribution list (Community) --- */
+.contrib-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.contrib-list li {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.contrib-list li:hover,
+.contrib-list li:focus-within {
+  transform: translateY(-8px);
+  border-color: var(--lavender-deep);
+}
+
+.contrib-list li span {
+  display: block;
+  font-weight: 400;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  margin-top: 4px;
+}
+
+/* --- buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--lavender);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.98rem;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+}
+.btn:hover, .btn:focus-visible { background: var(--lavender-text); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
+.btn-outline:hover, .btn-outline:focus-visible { background: var(--ink); color: #fff; }
+
+/* --- #PassTheMic / Talks slider --- */
+.mic-slider {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  padding: 4px 4px 20px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mic-slider::-webkit-scrollbar { height: 8px; }
+.mic-slider::-webkit-scrollbar-thumb { background: var(--line); border-radius: 8px; }
+
+.mic-card {
+  flex: 0 0 auto;
+  width: min(78vw, 380px);
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: var(--ink);
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+.mic-card:hover,
+.mic-card:focus-visible {
+  transform: translateY(-8px);
+}
+
+.mic-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.mic-card-body { padding: 20px 22px 24px; }
+
+.mic-card .eyebrow {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--lavender-deep);
+  margin: 0 0 8px;
+}
+
+.mic-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.mic-card p {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.mic-card.cta {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--ink);
+  color: #fff;
+  padding: 32px 26px;
+  min-height: 260px;
+}
+.mic-card.cta .btn { margin-top: 14px; }
+
+.note-panel {
+  margin-top: clamp(24px, 4vw, 36px);
+  padding: 20px 24px;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  max-width: 640px;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* #PassTheMic article list */
+.article-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.article-list li { border-bottom: 1px solid var(--line); }
+.article-list a { display: grid; grid-template-columns: 220px 1fr auto; gap: 20px; align-items: baseline; padding: 18px 4px; text-decoration: none; color: inherit; }
+.article-list a:hover, .article-list a:focus-visible { background: rgba(0,0,0,.03); }
+.article-list .art-guest { font-weight: 600; }
+.article-list .art-title { opacity: .85; }
+.article-list .art-go { opacity: .6; }
+@media (max-width: 640px) {
+  .article-list a { grid-template-columns: 1fr auto; gap: 4px 12px; }
+  .article-list .art-guest { grid-column: 1 / 2; }
+  .article-list .art-title { grid-column: 1 / 2; }
+  .article-list .art-go { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+}
+
+/* Upcoming talks (Talks & Events) */
+.subhead {
+  font-weight: 700;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  margin: clamp(36px, 5vw, 56px) 0 clamp(16px, 2vw, 22px);
+}
+.talk-card {
+  max-width: 760px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 22px;
+  padding: clamp(24px, 3vw, 36px);
+}
+.talk-card .talk-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  opacity: 0.8;
+  margin: 0 0 10px;
+}
+.talk-card h4 {
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+.talk-card p { margin: 0 0 12px; font-size: 1rem; opacity: 0.88; }
+.talk-card .talk-theme { font-style: italic; opacity: 0.95; }
+.talk-card p:last-child { margin-bottom: 0; }
+
+/* Embedded video, centered (Community) */
+.video-section { padding-top: 0; }
+.video-embed {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0b0f16;
+}
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
